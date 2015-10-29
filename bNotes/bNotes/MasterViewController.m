@@ -115,7 +115,8 @@
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    cell.textLabel.text = [object valueForKey:@"text"];
+    cell.textLabel.text = [object valueForKey:@"title"];
+    cell.detailTextLabel.text = [object valueForKey:@"text"];
 }
 
 #pragma mark - Fetched results controller

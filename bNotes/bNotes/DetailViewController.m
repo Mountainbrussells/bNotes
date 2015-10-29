@@ -11,6 +11,7 @@
 
 @interface DetailViewController ()<UITextViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextView *textView;
+@property (weak, nonatomic) IBOutlet UITextField *titleTextField;
 
 @end
 
@@ -31,12 +32,15 @@
     // Update the user interface for the detail item.
     
     if (self.detailItem) {
+        self.titleTextField.text = [[self.detailItem valueForKey:@"title"] description];
         self.textView.text = [[self.detailItem valueForKey:@"text"] description];
     }
     
     self.textView.delegate = self;
+    if ([self.textView.text isEqualToString:@""]) {
     self.textView.text = @"Add note here";
     self.textView.textColor = [UIColor lightGrayColor];
+    }
 }
 
 - (void)viewDidLoad {
@@ -53,6 +57,7 @@
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     [_detailItem setValue:self.textView.text forKey:@"text"];
+    [_detailItem setValue:self.titleTextField.text forKey:@"title"];
     
     [self saveContext];
     
