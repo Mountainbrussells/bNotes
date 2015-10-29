@@ -51,7 +51,7 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="bNote" id="mOI-FS-AaM"/>
                     <connections>
-                        <outlet property="texView" destination="BQc-uh-YWx" id="KTa-67-q6w"/>
+                        <outlet property="textView" destination="BQc-uh-YWx" id="fkl-Es-6dy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FJe-Yq-33r" sceneMemberID="firstResponder"/>
