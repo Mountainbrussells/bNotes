@@ -56,6 +56,7 @@
 		C9E0F7811BE18A0900B9F387 /* bNotesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = bNotesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9E0F7851BE18A0900B9F387 /* bNotesUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = bNotesUITests.m; sourceTree = "<group>"; };
 		C9E0F7871BE18A0900B9F387 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C9E0F7931BE242C400B9F387 /* bNotes 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "bNotes 2.xcdatamodel"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -531,9 +532,10 @@
 		C9E0F7601BE18A0900B9F387 /* bNotes.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				C9E0F7931BE242C400B9F387 /* bNotes 2.xcdatamodel */,
 				C9E0F7611BE18A0900B9F387 /* bNotes.xcdatamodel */,
 			);
-			currentVersion = C9E0F7611BE18A0900B9F387 /* bNotes.xcdatamodel */;
+			currentVersion = C9E0F7931BE242C400B9F387 /* bNotes 2.xcdatamodel */;
 			path = bNotes.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

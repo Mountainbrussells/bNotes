@@ -7,8 +7,10 @@
 //
 
 #import "DetailViewController.h"
+#import "AppDelegate.h"
 
-@interface DetailViewController ()
+@interface DetailViewController ()<UITextViewDelegate>
+@property (weak, nonatomic) IBOutlet UITextView *texView;
 
 @end
 
@@ -27,8 +29,9 @@
 
 - (void)configureView {
     // Update the user interface for the detail item.
+    
     if (self.detailItem) {
-        self.detailDescriptionLabel.text = [[self.detailItem valueForKey:@"timeStamp"] description];
+        self.texView.text = [[self.detailItem valueForKey:@"text"] description];
     }
 }
 
@@ -41,6 +44,28 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [_detailItem setValue:self.texView.text forKey:@"text"];
+    
+    [self saveContext];
+    
+}
+
+- (void) saveContext {
+    NSError *error = nil;
+    NSManagedObjectContext *managedObjectContext = [self.detailItem managedObjectContext];
+    
+    if (managedObjectContext != nil) {
+        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+        }
+    }
+    
+    
 }
 
 @end
