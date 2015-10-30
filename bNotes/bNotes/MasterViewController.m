@@ -10,7 +10,7 @@
 #import "DetailViewController.h"
 
 
-@interface MasterViewController ()
+@interface MasterViewController () 
 
 @end
 
@@ -20,6 +20,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
+    
+    self.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
+    self.navigationItem.leftItemsSupplementBackButton = true;
 
 //    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
 //    self.navigationItem.rightBarButtonItem = addButton;

@@ -63,6 +63,11 @@
     
 }
 
+- (IBAction)addButton:(id)sender {
+//    UISplitViewController *splitViewController = self.splitViewController;
+//    [splitViewController showDetailViewController:splitViewController.viewControllers[0] sender:self];
+}
+
 - (void) saveContext {
     NSError *error = nil;
     NSManagedObjectContext *managedObjectContext = [self.detailItem managedObjectContext];
