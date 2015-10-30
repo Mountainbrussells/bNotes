@@ -57,6 +57,7 @@
 		C9E0F7851BE18A0900B9F387 /* bNotesUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = bNotesUITests.m; sourceTree = "<group>"; };
 		C9E0F7871BE18A0900B9F387 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C9E0F7931BE242C400B9F387 /* bNotes 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "bNotes 2.xcdatamodel"; sourceTree = "<group>"; };
+		C9E0F79A1BE2875B00B9F387 /* bNotes 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "bNotes 3.xcdatamodel"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -509,6 +510,7 @@
 				C9E0F78C1BE18A0A00B9F387 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C9E0F78D1BE18A0A00B9F387 /* Build configuration list for PBXNativeTarget "bNotesTests" */ = {
 			isa = XCConfigurationList;
@@ -517,6 +519,7 @@
 				C9E0F78F1BE18A0A00B9F387 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C9E0F7901BE18A0A00B9F387 /* Build configuration list for PBXNativeTarget "bNotesUITests" */ = {
 			isa = XCConfigurationList;
@@ -525,6 +528,7 @@
 				C9E0F7921BE18A0A00B9F387 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
@@ -532,10 +536,11 @@
 		C9E0F7601BE18A0900B9F387 /* bNotes.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				C9E0F79A1BE2875B00B9F387 /* bNotes 3.xcdatamodel */,
 				C9E0F7931BE242C400B9F387 /* bNotes 2.xcdatamodel */,
 				C9E0F7611BE18A0900B9F387 /* bNotes.xcdatamodel */,
 			);
-			currentVersion = C9E0F7931BE242C400B9F387 /* bNotes 2.xcdatamodel */;
+			currentVersion = C9E0F79A1BE2875B00B9F387 /* bNotes 3.xcdatamodel */;
 			path = bNotes.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
