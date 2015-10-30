@@ -87,6 +87,8 @@
 		C9E0F7A21BE4134F00B9F387 /* ShareViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShareViewController.m; sourceTree = "<group>"; };
 		C9E0F7A51BE4134F00B9F387 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		C9E0F7A71BE4134F00B9F387 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C9E0F7AF1BE41FDA00B9F387 /* bNotesShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = bNotesShare.entitlements; sourceTree = "<group>"; };
+		C9E0F7B01BE422A800B9F387 /* bNotes.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = bNotes.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +148,7 @@
 		C9E0F7591BE18A0900B9F387 /* bNotes */ = {
 			isa = PBXGroup;
 			children = (
+				C9E0F7B01BE422A800B9F387 /* bNotes.entitlements */,
 				C9E0F75D1BE18A0900B9F387 /* AppDelegate.h */,
 				C9E0F75E1BE18A0900B9F387 /* AppDelegate.m */,
 				C9E0F7631BE18A0900B9F387 /* MasterViewController.h */,
@@ -191,6 +194,7 @@
 		C9E0F7A01BE4134F00B9F387 /* bNotesShare */ = {
 			isa = PBXGroup;
 			children = (
+				C9E0F7AF1BE41FDA00B9F387 /* bNotesShare.entitlements */,
 				C9E0F7A11BE4134F00B9F387 /* ShareViewController.h */,
 				C9E0F7A21BE4134F00B9F387 /* ShareViewController.m */,
 				C9E0F7A41BE4134F00B9F387 /* MainInterface.storyboard */,
@@ -285,6 +289,12 @@
 				TargetAttributes = {
 					C9E0F7561BE18A0900B9F387 = {
 						CreatedOnToolsVersion = 7.1;
+						DevelopmentTeam = GUY34L2LLG;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 					C9E0F7751BE18A0900B9F387 = {
 						CreatedOnToolsVersion = 7.1;
@@ -297,6 +307,11 @@
 					C9E0F79E1BE4134F00B9F387 = {
 						CreatedOnToolsVersion = 7.1;
 						DevelopmentTeam = GUY34L2LLG;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -527,10 +542,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = bNotes/bNotes.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = bNotes/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.BenRussell.bNotes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -538,10 +557,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = bNotes/bNotes.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = bNotes/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.BenRussell.bNotes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
@@ -596,11 +619,14 @@
 		C9E0F7AB1BE4135000B9F387 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = bNotesShare/bNotesShare.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = bNotesShare/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.BenRussell.bNotes.bNotesShare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -608,11 +634,14 @@
 		C9E0F7AC1BE4135000B9F387 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = bNotesShare/bNotesShare.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = bNotesShare/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.BenRussell.bNotes.bNotesShare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
