@@ -76,6 +76,22 @@
     
     
 }
+- (IBAction)shareButton:(id)sender {
+    NSMutableArray *itemsToShare = [NSMutableArray array];
+    
+    if (self.titleTextField.text > 0) {
+        [itemsToShare addObject:self.titleTextField.text];
+    }
+    
+    if (self.textView.text > 0) {
+        [itemsToShare addObject:self.textView.text];
+    }
+    
+    if (itemsToShare.count > 0) {
+        UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:itemsToShare applicationActivities:nil];
+        [self presentViewController:activityVC animated:YES completion:nil];
+    }
+}
 
 #pragma mark - Text View Delegates
 
