@@ -33,6 +33,18 @@
 		<string>MainInterface</string>
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.share-services</string>
+		<key>NSExtensionActivationSupportsText</key>
+		<true/>
+		<key>NSExtensionActivationSupportsImageWithMaxCount</key>
+		<integer>0</integer>
+		<key>NSExtensionActivationSupportsMovieWithMaxCount</key>
+		<integer>0</integer>
+		<key>NSExtensionActivationSupportsWebURLWithMaxCount</key>
+		<integer>1</integer>
+		<key>NSExtensionActivationSupportsWebPageWithMaxCount</key>
+		<integer>0</integer>
+		<key>NSExtensionActivationSupportsFileWithMaxCount</key>
+		<integer>0</integer>
 	</dict>
 </dict>
 </plist>
