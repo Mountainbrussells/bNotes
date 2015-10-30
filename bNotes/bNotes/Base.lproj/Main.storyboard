@@ -57,7 +57,13 @@
                         </constraints>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="bNote" id="mOI-FS-AaM"/>
+                    <navigationItem key="navigationItem" title="bNote" id="mOI-FS-AaM">
+                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="dUQ-jD-UPc">
+                            <connections>
+                                <action selector="shareButton:" destination="JEX-9P-axG" id="C8h-vh-KWS"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="textView" destination="BQc-uh-YWx" id="fkl-Es-6dy"/>
                         <outlet property="titleTextField" destination="Ml6-r5-JhK" id="1Ee-pC-WUi"/>
@@ -65,7 +71,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FJe-Yq-33r" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="686" y="129"/>
+            <point key="canvasLocation" x="651" y="129"/>
         </scene>
         <!--Split View Controller-->
         <scene sceneID="Nki-YV-4Qg">
