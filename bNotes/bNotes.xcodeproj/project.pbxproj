@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C90E75701BE7C0950077C3CC /* bNotes.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C9E0F7601BE18A0900B9F387 /* bNotes.xcdatamodeld */; };
+		C90E75731BE7E1E40077C3CC /* PersistenceController.m in Sources */ = {isa = PBXBuildFile; fileRef = C90E75721BE7E1E40077C3CC /* PersistenceController.m */; };
 		C9E0F75C1BE18A0900B9F387 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E0F75B1BE18A0900B9F387 /* main.m */; };
 		C9E0F75F1BE18A0900B9F387 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E0F75E1BE18A0900B9F387 /* AppDelegate.m */; };
 		C9E0F7621BE18A0900B9F387 /* bNotes.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C9E0F7601BE18A0900B9F387 /* bNotes.xcdatamodeld */; };
@@ -61,6 +63,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C90E75711BE7E1E40077C3CC /* PersistenceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersistenceController.h; sourceTree = "<group>"; };
+		C90E75721BE7E1E40077C3CC /* PersistenceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersistenceController.m; sourceTree = "<group>"; };
 		C9E0F7571BE18A0900B9F387 /* bNotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = bNotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9E0F75B1BE18A0900B9F387 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C9E0F75D1BE18A0900B9F387 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -126,6 +130,8 @@
 		C9E0F74E1BE18A0900B9F387 = {
 			isa = PBXGroup;
 			children = (
+				C90E75711BE7E1E40077C3CC /* PersistenceController.h */,
+				C90E75721BE7E1E40077C3CC /* PersistenceController.m */,
 				C9E0F7591BE18A0900B9F387 /* bNotes */,
 				C9E0F7791BE18A0900B9F387 /* bNotesTests */,
 				C9E0F7841BE18A0900B9F387 /* bNotesUITests */,
@@ -377,6 +383,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C9E0F7681BE18A0900B9F387 /* DetailViewController.m in Sources */,
+				C90E75731BE7E1E40077C3CC /* PersistenceController.m in Sources */,
 				C9E0F7651BE18A0900B9F387 /* MasterViewController.m in Sources */,
 				C9E0F75F1BE18A0900B9F387 /* AppDelegate.m in Sources */,
 				C9E0F75C1BE18A0900B9F387 /* main.m in Sources */,
@@ -404,6 +411,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C90E75701BE7C0950077C3CC /* bNotes.xcdatamodeld in Sources */,
 				C9E0F7A31BE4134F00B9F387 /* ShareViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -692,6 +700,7 @@
 				C9E0F7AC1BE4135000B9F387 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

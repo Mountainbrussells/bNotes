@@ -8,22 +8,50 @@
 
 #import "ShareViewController.h"
 
+
 @interface ShareViewController ()
 
 @end
 
 @implementation ShareViewController
 
+- (void)viewDidLoad {
+    
+}
+
+- (void)setDetailItem:(id)newDetailItem {
+    if (_detailItem != newDetailItem) {
+        _detailItem = newDetailItem;
+    }
+}
+
 - (BOOL)isContentValid {
     // Do validation of contentText and/or NSExtensionContext attachments here
-    return YES;
+    NSInteger messageLength = self.contentText.length;
+    
+    if (messageLength > 0) {
+        return YES;
+    }
+    return NO;
 }
 
 - (void)didSelectPost {
     // This is called after the user selects Post. Do the upload of contentText and/or NSExtensionContext attachments.
     
+    [_detailItem setValue:self.contentText forKey:@"text"];
+    
+    [self saveContext];
+    
     // Inform the host that we're done, so it un-blocks its UI. Note: Alternatively you could call super's -didSelectPost, which will similarly complete the extension context.
     [self.extensionContext completeRequestReturningItems:@[] completionHandler:nil];
+}
+
+
+
+- (void) saveContext {
+   
+    
+    
 }
 
 - (NSArray *)configurationItems {
