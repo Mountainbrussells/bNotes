@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PersistenceController.h"
 
 @interface DetailViewController : UIViewController
 
 @property (strong, nonatomic) id detailItem;
-
+@property (strong, nonatomic) PersistenceController *persistenceController;
 
 @end
 

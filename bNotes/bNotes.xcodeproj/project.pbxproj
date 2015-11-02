@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		C90E75701BE7C0950077C3CC /* bNotes.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C9E0F7601BE18A0900B9F387 /* bNotes.xcdatamodeld */; };
 		C90E75731BE7E1E40077C3CC /* PersistenceController.m in Sources */ = {isa = PBXBuildFile; fileRef = C90E75721BE7E1E40077C3CC /* PersistenceController.m */; };
+		C90E75B91BE821970077C3CC /* PersistenceController.m in Sources */ = {isa = PBXBuildFile; fileRef = C90E75721BE7E1E40077C3CC /* PersistenceController.m */; };
 		C9E0F75C1BE18A0900B9F387 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E0F75B1BE18A0900B9F387 /* main.m */; };
 		C9E0F75F1BE18A0900B9F387 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E0F75E1BE18A0900B9F387 /* AppDelegate.m */; };
 		C9E0F7621BE18A0900B9F387 /* bNotes.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C9E0F7601BE18A0900B9F387 /* bNotes.xcdatamodeld */; };
@@ -412,6 +413,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C90E75701BE7C0950077C3CC /* bNotes.xcdatamodeld in Sources */,
+				C90E75B91BE821970077C3CC /* PersistenceController.m in Sources */,
 				C9E0F7A31BE4134F00B9F387 /* ShareViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

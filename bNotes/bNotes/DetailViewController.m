@@ -31,6 +31,8 @@
 - (void)configureView {
     // Update the user interface for the detail item.
     
+    
+    
     if (self.detailItem) {
         self.titleTextField.text = [[self.detailItem valueForKey:@"title"] description];
         self.textView.text = [[self.detailItem valueForKey:@"text"] description];
@@ -59,28 +61,17 @@
     [_detailItem setValue:self.textView.text forKey:@"text"];
     [_detailItem setValue:self.titleTextField.text forKey:@"title"];
     
-    [self saveContext];
+    [self.persistenceController save];
     
 }
 
 - (IBAction)addButton:(id)sender {
-//    UISplitViewController *splitViewController = self.splitViewController;
-//    [splitViewController showDetailViewController:splitViewController.viewControllers[0] sender:self];
+    [_detailItem setValue:self.textView.text forKey:@"text"];
+    [_detailItem setValue:self.titleTextField.text forKey:@"title"];
+    [self.persistenceController save];
 }
 
-- (void) saveContext {
-    NSError *error = nil;
-    NSManagedObjectContext *managedObjectContext = [self.detailItem managedObjectContext];
-    
-    if (managedObjectContext != nil) {
-        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
-        }
-    }
-    
-    
-}
+
 - (IBAction)shareButton:(id)sender {
     NSMutableArray *itemsToShare = [NSMutableArray array];
     

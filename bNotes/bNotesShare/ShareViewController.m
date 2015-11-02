@@ -7,15 +7,19 @@
 //
 
 #import "ShareViewController.h"
+#import "PersistenceController.h"
 
 
 @interface ShareViewController ()
+
+@property (nonatomic, strong) PersistenceController *persistenceController;
 
 @end
 
 @implementation ShareViewController
 
 - (void)viewDidLoad {
+    self.persistenceController = [[PersistenceController alloc] initWithCallback:nil];
     
 }
 
@@ -50,7 +54,7 @@
 
 - (void) saveContext {
    
-    
+    [self.persistenceController save];
     
 }
 

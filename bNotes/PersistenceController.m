@@ -81,8 +81,8 @@
 
 - (void)save;
 {
-    if (![[self privateContext] hasChanges] && [[self managedObjectContext] hasChanges]) return;
-    
+    if (!([[self privateContext] hasChanges] || [[self managedObjectContext] hasChanges])) return;
+    NSLog(@"%s", __PRETTY_FUNCTION__);
     [[self managedObjectContext] performBlockAndWait:^{
         NSError *error;
         
@@ -101,7 +101,7 @@
             abort();
         }
         
-        [[self privateContext] performBlock:^{
+        [[self privateContext] performBlockAndWait:^{
             NSError *privateError;
             if (![[self privateContext] save:&privateError]) {
                 // Report any error we got.

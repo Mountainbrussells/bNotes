@@ -23,9 +23,6 @@
 
 @property (strong, readonly) PersistenceController *persistenceController;
 
-- (void)saveContext;
-- (NSURL *)applicationDocumentsDirectory;
-
 
 @end
 
