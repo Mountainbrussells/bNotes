@@ -22,7 +22,7 @@
 @property (strong, nonatomic) PersistenceController *persistenceController;
 
 
-
+- (IBAction) detailControllerSaved:(UIStoryboardSegue *)segue;
 
 @end
 

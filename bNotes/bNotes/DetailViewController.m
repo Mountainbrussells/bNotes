@@ -28,6 +28,10 @@
     }
 }
 
+- (void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+}
+
 - (void)configureView {
     // Update the user interface for the detail item.
     
@@ -42,6 +46,82 @@
     if ([self.textView.text isEqualToString:@""]) {
     self.textView.text = @"Add note here";
     self.textView.textColor = [UIColor lightGrayColor];
+    }
+    
+    if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular || self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassRegular) {
+        UINavigationBar *naviBar = [[UINavigationBar alloc] init];
+        UINavigationItem *item = [[UINavigationItem alloc] initWithTitle:@"bNotes Detail"];
+        UIBarButtonItem *save = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveNote:)];
+        UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(shareButton:)];
+        NSArray *buttonArray = @[save, share];
+        
+        item.rightBarButtonItems = buttonArray;
+        
+        [naviBar pushNavigationItem:item animated:NO];
+    
+        [self.view addSubview:naviBar];
+        
+        naviBar.translatesAutoresizingMaskIntoConstraints = NO;
+        self.textView.translatesAutoresizingMaskIntoConstraints = NO;
+        self.titleTextField.translatesAutoresizingMaskIntoConstraints = NO;
+        
+        [self.view removeConstraints:[self.view constraints]];
+        
+        NSLayoutConstraint *naviWidthConstraint = [NSLayoutConstraint constraintWithItem:naviBar
+                                                                               attribute:NSLayoutAttributeWidth
+                                                                               relatedBy:NSLayoutRelationEqual
+                                                                                  toItem:self.view
+                                                                               attribute:NSLayoutAttributeWidth
+                                                                              multiplier:1
+                                                                                constant:0];
+        NSLayoutConstraint *naviTopConstraint = [NSLayoutConstraint constraintWithItem:naviBar
+                                                                             attribute:NSLayoutAttributeTop
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:self.view
+                                                                             attribute:NSLayoutAttributeTop
+                                                                            multiplier:1
+                                                                              constant:20];
+        NSLayoutConstraint *titleWidthConstaint = [NSLayoutConstraint constraintWithItem:_titleTextField
+                                                                             attribute:NSLayoutAttributeWidth
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:self.view
+                                                                             attribute:NSLayoutAttributeWidth
+                                                                            multiplier:1
+                                                                              constant:0];
+        NSLayoutConstraint *titleTopConstraint = [NSLayoutConstraint constraintWithItem:_titleTextField
+                                                                             attribute:NSLayoutAttributeTop
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:naviBar
+                                                                              attribute:NSLayoutAttributeBottom
+                                                                            multiplier:1
+                                                                              constant:8];
+        NSLayoutConstraint *textFieldWidthConstraint = [NSLayoutConstraint constraintWithItem:_textView
+                                                                             attribute:NSLayoutAttributeWidth
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:self.view
+                                                                             attribute:NSLayoutAttributeWidth
+                                                                            multiplier:1
+                                                                              constant:0];
+        NSLayoutConstraint *textFieldTopConstraint = [NSLayoutConstraint constraintWithItem:_textView
+                                                                             attribute:NSLayoutAttributeTop
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:_titleTextField
+                                                                             attribute:NSLayoutAttributeBottom
+                                                                            multiplier:1
+                                                                              constant:8];
+        NSLayoutConstraint *textFieldBottomConstraint = [NSLayoutConstraint constraintWithItem:_textView
+                                                                             attribute:NSLayoutAttributeBottom
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:self.view
+                                                                             attribute:NSLayoutAttributeBottomMargin
+                                                                            multiplier:1
+                                                                              constant:-20];
+        NSArray *constraints = @[naviWidthConstraint, naviTopConstraint, titleTopConstraint, titleWidthConstaint, textFieldBottomConstraint, textFieldTopConstraint, textFieldWidthConstraint];
+        [self.view addConstraints:constraints];
+        
+        
+        
+        
     }
 }
 
@@ -65,10 +145,25 @@
     
 }
 
-- (IBAction)addButton:(id)sender {
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     [_detailItem setValue:self.textView.text forKey:@"text"];
     [_detailItem setValue:self.titleTextField.text forKey:@"title"];
     [self.persistenceController save];
+}
+
+//- (IBAction)addButton:(id)sender {
+////    [_detailItem setValue:self.textView.text forKey:@"text"];
+////    [_detailItem setValue:self.titleTextField.text forKey:@"title"];
+////    [self.persistenceController save];
+//}
+//
+- (IBAction)saveNote:(id)sender
+{
+    [_detailItem setValue:self.textView.text forKey:@"text"];
+    [_detailItem setValue:self.titleTextField.text forKey:@"title"];
+    [self.persistenceController save];
+    
+    [self performSegueWithIdentifier:@"unwindSegue" sender:self];
 }
 
 
@@ -84,7 +179,14 @@
     }
     
     if (itemsToShare.count > 0) {
+        
+        
         UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:itemsToShare applicationActivities:nil];
+        if ( [activityVC respondsToSelector:@selector(popoverPresentationController)] ) {
+            // iOS8
+            activityVC.popoverPresentationController.sourceView =
+            self.view;
+        }
         [self presentViewController:activityVC animated:YES completion:nil];
     }
 }

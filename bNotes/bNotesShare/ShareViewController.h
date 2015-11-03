@@ -8,9 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import <Social/Social.h>
+#import <CoreData/CoreData.h>
 
-@interface ShareViewController : SLComposeServiceViewController
 
-@property (strong, nonatomic) id detailItem;
+
+@interface ShareViewController : SLComposeServiceViewController <NSFetchedResultsControllerDelegate>
+
+
 
 @end

@@ -60,7 +60,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"addNote"]) {
         NSManagedObject *object = [self insertNewObject];
-        DetailViewController *controller = (DetailViewController *)[[segue destinationViewController] topViewController];
+        DetailViewController *controller = (DetailViewController *)[segue destinationViewController];
         controller.persistenceController = self.persistenceController;
         [controller setDetailItem:object];
         
@@ -69,12 +69,18 @@
     if ([[segue identifier] isEqualToString:@"showNote"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-        DetailViewController *controller = (DetailViewController *)[[segue destinationViewController] topViewController];
+        DetailViewController *controller = (DetailViewController *)[segue destinationViewController];
         controller.persistenceController = self.persistenceController;
         [controller setDetailItem:object];
         controller.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
         controller.navigationItem.leftItemsSupplementBackButton = YES;
     }
+}
+
+#pragma mark - Exit segue
+
+- (IBAction) detailControllerSaved:(UIStoryboardSegue *)segue {
+    
 }
 
 #pragma mark - Table View
