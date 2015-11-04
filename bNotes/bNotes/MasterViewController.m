@@ -11,7 +11,10 @@
 
 
 
-@interface MasterViewController () 
+@interface MasterViewController () <UISearchDisplayDelegate>
+
+@property (strong, nonatomic) NSMutableArray *fetchedObjects;
+@property (strong, nonatomic) NSMutableArray *filteredObjects;
 
 @end
 
@@ -24,6 +27,9 @@
     
     self.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
     self.navigationItem.leftItemsSupplementBackButton = true;
+    
+    self.fetchedObjects = [[NSMutableArray alloc] initWithArray:self.fetchedResultsController.fetchedObjects];
+    self.filteredObjects = [[NSMutableArray alloc] init];
 
 
 }
@@ -86,18 +92,32 @@
 #pragma mark - Table View
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        return 1;
+    }
     return [[self.fetchedResultsController sections] count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        return self.filteredObjects.count;
+    }
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
     return [sectionInfo numberOfObjects];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+        [self configureSearchCell:cell atIndexPath:indexPath];
+        return cell;
+        
+    } else {
+    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     [self configureCell:cell atIndexPath:indexPath];
     return cell;
+    }
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -118,6 +138,18 @@
     NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
     cell.textLabel.text = [object valueForKey:@"title"];
     cell.detailTextLabel.text = [object valueForKey:@"text"];
+}
+
+- (void)configureSearchCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+    if (self.filteredObjects.count > 0) {
+        NSManagedObject *object = self.filteredObjects[indexPath.row];
+        cell.textLabel.text = [object valueForKey:@"title"];
+        cell.detailTextLabel.text = [object valueForKey:@"text"];
+    }
+    else {
+        return;
+    }
+    
 }
 
 #pragma mark - Fetched results controller
@@ -211,6 +243,33 @@
     [self.tableView endUpdates];
 }
 
+#pragma mark - Filtering
+
+- (void)filterNotes:(NSArray *)notes forSearchText:(NSString *)searchText
+{
+    
+    
+    NSPredicate *textPredicate = [NSPredicate predicateWithFormat:
+                              @"text CONTAINS[cd] %@", searchText];
+
+    NSPredicate *titlePredicate = [NSPredicate predicateWithFormat:
+                              @"title CONTAINS[cd] %@", searchText];
+    
+    NSPredicate *predicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[textPredicate, titlePredicate]];
+    
+    
+    self.filteredObjects = [[NSMutableArray alloc] initWithArray:[notes filteredArrayUsingPredicate:predicate]];
+    
+}
+
+#pragma mark - UISearchDisplayDelegates
+
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(nullable NSString *)searchString
+{
+    NSArray *notes = [[NSArray alloc] initWithArray: self.fetchedResultsController.fetchedObjects];
+    [self filterNotes:notes forSearchText:searchString];
+    return YES;
+}
 /*
 // Implementing the above methods to update the table view in response to individual changes may have performance implications if a large number of changes are made simultaneously. If this proves to be an issue, you can instead just implement controllerDidChangeContent: which notifies the delegate that all section and object changes have been processed. 
  

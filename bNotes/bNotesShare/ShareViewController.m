@@ -14,7 +14,7 @@
 @interface ShareViewController ()
 
 @property (nonatomic, strong) PersistenceController *persistenceController;
-@property (strong, nonatomic) NSManagedObject *object;
+@property (strong, nonatomic) NSString *originalContentTextForTitle;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 
 @property (strong, nonatomic) NSString *urlString;
@@ -25,9 +25,29 @@
 
 - (void)viewDidLoad {
     
-    self.persistenceController = [[PersistenceController alloc] initWithCallback:nil];
+    [super viewDidLoad];
     
-   
+    self.persistenceController = [[PersistenceController alloc] initWithCallback:nil];
+    self.originalContentTextForTitle = self.contentText;
+    NSExtensionItem *item = self.extensionContext.inputItems.firstObject;
+    NSItemProvider *itemProvider = item.attachments.firstObject;
+    if ([itemProvider hasItemConformingToTypeIdentifier:(NSString *)kUTTypeURL]) {
+        [itemProvider loadItemForTypeIdentifier:(NSString *)kUTTypeURL options:nil completionHandler:^(NSURL *url, NSError *error) {
+            self.urlString = url.absoluteString;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSString *title = self.contentText;
+                NSString *content = self.urlString;
+                self.textView.text = [NSString stringWithFormat:@"%@ - %@", title, content];
+            });
+//            NSManagedObject *object = [self insertNewObject];
+//            self.object = object;
+//            
+//            [self.object setValue:self.contentText forKey:@"title"];
+//            [self.object setValue:(NSString *)self.urlString forKey:@"text"];
+//            
+//            [self saveContext];
+        }];
+    }
 }
 
 
@@ -50,21 +70,16 @@
 - (void)didSelectPost {
     // This is called after the user selects Post. Do the upload of contentText and/or NSExtensionContext attachments.
     
-    NSExtensionItem *item = self.extensionContext.inputItems.firstObject;
-    NSItemProvider *itemProvider = item.attachments.firstObject;
-    if ([itemProvider hasItemConformingToTypeIdentifier:(NSString *)kUTTypeURL]) {
-        [itemProvider loadItemForTypeIdentifier:(NSString *)kUTTypeURL options:nil completionHandler:^(NSURL *url, NSError *error) {
-            self.urlString = url.absoluteString;
+    
+    
             NSManagedObject *object = [self insertNewObject];
-            self.object = object;
+    
             
-            [self.object setValue:self.contentText forKey:@"text"];
-            [self.object setValue:(NSString *)self.urlString forKey:@"title"];
+            [object setValue:self.originalContentTextForTitle forKey:@"title"];
+            [object setValue:self.textView.text forKey:@"text"];
             
             [self saveContext];
-        }];
-    }
-    
+     
     
     
     // Inform the host that we're done, so it un-blocks its UI. Note: Alternatively you could call super's -didSelectPost, which will similarly complete the extension context.
@@ -85,8 +100,8 @@
 }
 
 - (NSManagedObject *)insertNewObject {
-    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-    NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
+    NSManagedObjectContext *context = [self.persistenceController managedObjectContext];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Note" inManagedObjectContext:self.persistenceController.managedObjectContext];
     NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
     
     // If appropriate, configure the new managed object.
@@ -96,42 +111,6 @@
     // Save the context.
     [self.persistenceController save];
     return newManagedObject;
-}
-
-- (NSFetchedResultsController *)fetchedResultsController
-{
-    if (_fetchedResultsController != nil) {
-        return _fetchedResultsController;
-    }
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    // Edit the entity name as appropriate.
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Note" inManagedObjectContext:self.persistenceController.managedObjectContext];
-    [fetchRequest setEntity:entity];
-    
-    // Set the batch size to a suitable number.
-    [fetchRequest setFetchBatchSize:1];
-    
-    // Edit the sort key as appropriate.
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStamp" ascending:NO];
-    
-    [fetchRequest setSortDescriptors:@[sortDescriptor]];
-    
-    // Edit the section name key path and cache name if appropriate.
-    // nil for section name key path means "no sections".
-    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.persistenceController.managedObjectContext sectionNameKeyPath:nil cacheName:@"AllNotes"];
-    aFetchedResultsController.delegate = self;
-    self.fetchedResultsController = aFetchedResultsController;
-   
-    NSError *error = nil;
-    if (![self.fetchedResultsController performFetch:&error]) {
-        // Replace this implementation with code to handle the error appropriately.
-        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-    }
-    
-    return _fetchedResultsController;
 }
 
 @end

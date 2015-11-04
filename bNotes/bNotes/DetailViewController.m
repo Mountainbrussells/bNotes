@@ -10,7 +10,7 @@
 #import "AppDelegate.h"
 #import "MasterViewController.h"
 
-@interface DetailViewController ()<UITextViewDelegate>
+@interface DetailViewController ()<UITextViewDelegate, UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 @property (weak, nonatomic) IBOutlet UITextField *titleTextField;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
@@ -55,6 +55,7 @@
     self.textView.text = @"Add note here";
     self.textView.textColor = [UIColor lightGrayColor];
     }
+//    self.textView.dataDetectorTypes = UIDataDetectorTypeAll;
     
     self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryOverlay;
 
