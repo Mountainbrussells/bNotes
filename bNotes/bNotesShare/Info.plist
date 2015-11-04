@@ -40,6 +40,10 @@
 				<integer>0</integer>
 				<key>NSExtensionActivationSupportsFileWithMaxCount</key>
 				<integer>0</integer>
+				<key>NSExtensionPointName</key>
+				<string>com.apple.share-services</string>
+				<key>NSExtensionPointVersion</key>
+				<string>1.0</string>
 			</dict>
 		</dict>
 		<key>NSExtensionMainStoryboard</key>

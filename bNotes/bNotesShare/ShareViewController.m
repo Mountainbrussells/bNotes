@@ -8,6 +8,7 @@
 
 #import "ShareViewController.h"
 #import "PersistenceController.h"
+@import MobileCoreServices;
 
 
 @interface ShareViewController ()
@@ -16,21 +17,28 @@
 @property (strong, nonatomic) NSManagedObject *object;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 
+@property (strong, nonatomic) NSString *urlString;
+
 @end
 
 @implementation ShareViewController
 
 - (void)viewDidLoad {
-    self.persistenceController = [[PersistenceController alloc] initWithCallback:nil];
-   
     
+    self.persistenceController = [[PersistenceController alloc] initWithCallback:nil];
+    
+   
 }
+
 
 
 
 
 - (BOOL)isContentValid {
     // Do validation of contentText and/or NSExtensionContext attachments here
+   
+   
+    
     NSInteger messageLength = self.contentText.length;
     
     if (messageLength > 0) {
@@ -41,12 +49,23 @@
 
 - (void)didSelectPost {
     // This is called after the user selects Post. Do the upload of contentText and/or NSExtensionContext attachments.
-    NSManagedObject *object = [self insertNewObject];
-    self.object = object;
     
-    [self.object setValue:self.contentText forKey:@"text"];
+    NSExtensionItem *item = self.extensionContext.inputItems.firstObject;
+    NSItemProvider *itemProvider = item.attachments.firstObject;
+    if ([itemProvider hasItemConformingToTypeIdentifier:(NSString *)kUTTypeURL]) {
+        [itemProvider loadItemForTypeIdentifier:(NSString *)kUTTypeURL options:nil completionHandler:^(NSURL *url, NSError *error) {
+            self.urlString = url.absoluteString;
+            NSManagedObject *object = [self insertNewObject];
+            self.object = object;
+            
+            [self.object setValue:self.contentText forKey:@"text"];
+            [self.object setValue:(NSString *)self.urlString forKey:@"title"];
+            
+            [self saveContext];
+        }];
+    }
     
-    [self saveContext];
+    
     
     // Inform the host that we're done, so it un-blocks its UI. Note: Alternatively you could call super's -didSelectPost, which will similarly complete the extension context.
     [self.extensionContext completeRequestReturningItems:@[] completionHandler:nil];

@@ -8,10 +8,13 @@
 
 #import "DetailViewController.h"
 #import "AppDelegate.h"
+#import "MasterViewController.h"
 
 @interface DetailViewController ()<UITextViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 @property (weak, nonatomic) IBOutlet UITextField *titleTextField;
+@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+@property (assign) BOOL iPadViewLaidOut;
 
 @end
 
@@ -22,9 +25,14 @@
 - (void)setDetailItem:(id)newDetailItem {
     if (_detailItem != newDetailItem) {
         _detailItem = newDetailItem;
-            
+    
+        
         // Update the view.
-        [self configureView];
+        if (!self.iPadViewLaidOut) {
+            [self configureView];
+        }
+        
+        
     }
 }
 
@@ -48,7 +56,10 @@
     self.textView.textColor = [UIColor lightGrayColor];
     }
     
+    self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryOverlay;
+
     if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular || self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassRegular) {
+
         UINavigationBar *naviBar = [[UINavigationBar alloc] init];
         UINavigationItem *item = [[UINavigationItem alloc] initWithTitle:@"bNotes Detail"];
         UIBarButtonItem *save = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveNote:)];
@@ -120,7 +131,7 @@
         [self.view addConstraints:constraints];
         
         
-        
+        self.iPadViewLaidOut = true;
         
     }
 }
@@ -128,7 +139,31 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    [self configureView];
+
+    
+    
+    // Update the view.
+    if (!self.iPadViewLaidOut) {
+        [self configureView];
+    }
+    
+    
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    
+    // TODO: Need to have the initial detailItem load up when the view first loads
+//    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad){
+//        if (!self.detailItem) {
+//            // This is for iPad, as the detail view ends up being the initial view controller presented
+//            AppDelegate *ad = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//            self.persistenceController = ad.persistenceController;
+//            self.detailItem = [self.fetchedResultsController fetchedObjects][0];
+//            
+//        }
+//    }
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -208,6 +243,44 @@
         self.textView.text = @"Add note here";
         self.textView.textColor = [UIColor lightGrayColor];
     }
+}
+
+#pragma mark - Fetched results controller
+
+- (NSFetchedResultsController *)fetchedResultsController
+{
+    if (_fetchedResultsController != nil) {
+        return _fetchedResultsController;
+    }
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    // Edit the entity name as appropriate.
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Note" inManagedObjectContext:self.persistenceController.managedObjectContext];
+    [fetchRequest setEntity:entity];
+    
+    // Set the batch size to a suitable number.
+    [fetchRequest setFetchBatchSize:20];
+    
+    // Edit the sort key as appropriate.
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStamp" ascending:NO];
+    
+    [fetchRequest setSortDescriptors:@[sortDescriptor]];
+    
+    // Edit the section name key path and cache name if appropriate.
+    // nil for section name key path means "no sections".
+    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.persistenceController.managedObjectContext sectionNameKeyPath:nil cacheName:@"AllNotes"];
+    aFetchedResultsController.delegate = self;
+    self.fetchedResultsController = aFetchedResultsController;
+    self.fetchedResultsController.delegate = self;
+    NSError *error = nil;
+    if (![self.fetchedResultsController performFetch:&error]) {
+        // Replace this implementation with code to handle the error appropriately.
+        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+    
+    return _fetchedResultsController;
 }
 
 

@@ -9,10 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "PersistenceController.h"
 
-@interface DetailViewController : UIViewController
+@interface DetailViewController : UIViewController<NSFetchedResultsControllerDelegate>
 
 @property (strong, nonatomic) id detailItem;
 @property (strong, nonatomic) PersistenceController *persistenceController;
+
 
 @end
 
