@@ -8,10 +8,13 @@
 
 #import "DetailViewController.h"
 #import "AppDelegate.h"
+#import "MasterViewController.h"
 
 @interface DetailViewController ()<UITextViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 @property (weak, nonatomic) IBOutlet UITextField *titleTextField;
+@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+@property (assign) BOOL iPadViewLaidOut;
 
 @end
 
@@ -22,14 +25,25 @@
 - (void)setDetailItem:(id)newDetailItem {
     if (_detailItem != newDetailItem) {
         _detailItem = newDetailItem;
-            
+    
+        
         // Update the view.
-        [self configureView];
+        if (!self.iPadViewLaidOut) {
+            [self configureView];
+        }
+        
+        
     }
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
 }
 
 - (void)configureView {
     // Update the user interface for the detail item.
+    
+    
     
     if (self.detailItem) {
         self.titleTextField.text = [[self.detailItem valueForKey:@"title"] description];
@@ -41,12 +55,115 @@
     self.textView.text = @"Add note here";
     self.textView.textColor = [UIColor lightGrayColor];
     }
+    
+    self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryOverlay;
+
+    if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular || self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassRegular) {
+
+        UINavigationBar *naviBar = [[UINavigationBar alloc] init];
+        UINavigationItem *item = [[UINavigationItem alloc] initWithTitle:@"bNotes Detail"];
+        UIBarButtonItem *save = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveNote:)];
+        UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(shareButton:)];
+        NSArray *buttonArray = @[save, share];
+        
+        item.rightBarButtonItems = buttonArray;
+        
+        [naviBar pushNavigationItem:item animated:NO];
+    
+        [self.view addSubview:naviBar];
+        
+        naviBar.translatesAutoresizingMaskIntoConstraints = NO;
+        self.textView.translatesAutoresizingMaskIntoConstraints = NO;
+        self.titleTextField.translatesAutoresizingMaskIntoConstraints = NO;
+        
+        [self.view removeConstraints:[self.view constraints]];
+        
+        NSLayoutConstraint *naviWidthConstraint = [NSLayoutConstraint constraintWithItem:naviBar
+                                                                               attribute:NSLayoutAttributeWidth
+                                                                               relatedBy:NSLayoutRelationEqual
+                                                                                  toItem:self.view
+                                                                               attribute:NSLayoutAttributeWidth
+                                                                              multiplier:1
+                                                                                constant:0];
+        NSLayoutConstraint *naviTopConstraint = [NSLayoutConstraint constraintWithItem:naviBar
+                                                                             attribute:NSLayoutAttributeTop
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:self.view
+                                                                             attribute:NSLayoutAttributeTop
+                                                                            multiplier:1
+                                                                              constant:20];
+        NSLayoutConstraint *titleWidthConstaint = [NSLayoutConstraint constraintWithItem:_titleTextField
+                                                                             attribute:NSLayoutAttributeWidth
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:self.view
+                                                                             attribute:NSLayoutAttributeWidth
+                                                                            multiplier:1
+                                                                              constant:0];
+        NSLayoutConstraint *titleTopConstraint = [NSLayoutConstraint constraintWithItem:_titleTextField
+                                                                             attribute:NSLayoutAttributeTop
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:naviBar
+                                                                              attribute:NSLayoutAttributeBottom
+                                                                            multiplier:1
+                                                                              constant:8];
+        NSLayoutConstraint *textFieldWidthConstraint = [NSLayoutConstraint constraintWithItem:_textView
+                                                                             attribute:NSLayoutAttributeWidth
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:self.view
+                                                                             attribute:NSLayoutAttributeWidth
+                                                                            multiplier:1
+                                                                              constant:0];
+        NSLayoutConstraint *textFieldTopConstraint = [NSLayoutConstraint constraintWithItem:_textView
+                                                                             attribute:NSLayoutAttributeTop
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:_titleTextField
+                                                                             attribute:NSLayoutAttributeBottom
+                                                                            multiplier:1
+                                                                              constant:8];
+        NSLayoutConstraint *textFieldBottomConstraint = [NSLayoutConstraint constraintWithItem:_textView
+                                                                             attribute:NSLayoutAttributeBottom
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:self.view
+                                                                             attribute:NSLayoutAttributeBottomMargin
+                                                                            multiplier:1
+                                                                              constant:-20];
+        NSArray *constraints = @[naviWidthConstraint, naviTopConstraint, titleTopConstraint, titleWidthConstaint, textFieldBottomConstraint, textFieldTopConstraint, textFieldWidthConstraint];
+        [self.view addConstraints:constraints];
+        
+        
+        self.iPadViewLaidOut = true;
+        
+    }
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    [self configureView];
+
+    
+    
+    // Update the view.
+    if (!self.iPadViewLaidOut) {
+        [self configureView];
+    }
+    
+    
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    
+    // TODO: Need to have the initial detailItem load up when the view first loads
+//    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad){
+//        if (!self.detailItem) {
+//            // This is for iPad, as the detail view ends up being the initial view controller presented
+//            AppDelegate *ad = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//            self.persistenceController = ad.persistenceController;
+//            self.detailItem = [self.fetchedResultsController fetchedObjects][0];
+//            
+//        }
+//    }
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -59,23 +176,32 @@
     [_detailItem setValue:self.textView.text forKey:@"text"];
     [_detailItem setValue:self.titleTextField.text forKey:@"title"];
     
-    [self saveContext];
+    [self.persistenceController save];
     
 }
 
-- (void) saveContext {
-    NSError *error = nil;
-    NSManagedObjectContext *managedObjectContext = [self.detailItem managedObjectContext];
-    
-    if (managedObjectContext != nil) {
-        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
-        }
-    }
-    
-    
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    [_detailItem setValue:self.textView.text forKey:@"text"];
+    [_detailItem setValue:self.titleTextField.text forKey:@"title"];
+    [self.persistenceController save];
 }
+
+//- (IBAction)addButton:(id)sender {
+////    [_detailItem setValue:self.textView.text forKey:@"text"];
+////    [_detailItem setValue:self.titleTextField.text forKey:@"title"];
+////    [self.persistenceController save];
+//}
+//
+- (IBAction)saveNote:(id)sender
+{
+    [_detailItem setValue:self.textView.text forKey:@"text"];
+    [_detailItem setValue:self.titleTextField.text forKey:@"title"];
+    [self.persistenceController save];
+    
+    [self performSegueWithIdentifier:@"unwindSegue" sender:self];
+}
+
+
 - (IBAction)shareButton:(id)sender {
     NSMutableArray *itemsToShare = [NSMutableArray array];
     
@@ -88,7 +214,14 @@
     }
     
     if (itemsToShare.count > 0) {
+        
+        
         UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:itemsToShare applicationActivities:nil];
+        if ( [activityVC respondsToSelector:@selector(popoverPresentationController)] ) {
+            // iOS8
+            activityVC.popoverPresentationController.sourceView =
+            self.view;
+        }
         [self presentViewController:activityVC animated:YES completion:nil];
     }
 }
@@ -110,6 +243,44 @@
         self.textView.text = @"Add note here";
         self.textView.textColor = [UIColor lightGrayColor];
     }
+}
+
+#pragma mark - Fetched results controller
+
+- (NSFetchedResultsController *)fetchedResultsController
+{
+    if (_fetchedResultsController != nil) {
+        return _fetchedResultsController;
+    }
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    // Edit the entity name as appropriate.
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Note" inManagedObjectContext:self.persistenceController.managedObjectContext];
+    [fetchRequest setEntity:entity];
+    
+    // Set the batch size to a suitable number.
+    [fetchRequest setFetchBatchSize:20];
+    
+    // Edit the sort key as appropriate.
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStamp" ascending:NO];
+    
+    [fetchRequest setSortDescriptors:@[sortDescriptor]];
+    
+    // Edit the section name key path and cache name if appropriate.
+    // nil for section name key path means "no sections".
+    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.persistenceController.managedObjectContext sectionNameKeyPath:nil cacheName:@"AllNotes"];
+    aFetchedResultsController.delegate = self;
+    self.fetchedResultsController = aFetchedResultsController;
+    self.fetchedResultsController.delegate = self;
+    NSError *error = nil;
+    if (![self.fetchedResultsController performFetch:&error]) {
+        // Replace this implementation with code to handle the error appropriately.
+        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+    
+    return _fetchedResultsController;
 }
 
 

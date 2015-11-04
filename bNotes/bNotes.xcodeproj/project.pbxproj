@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C90E75701BE7C0950077C3CC /* bNotes.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C9E0F7601BE18A0900B9F387 /* bNotes.xcdatamodeld */; };
+		C90E75731BE7E1E40077C3CC /* PersistenceController.m in Sources */ = {isa = PBXBuildFile; fileRef = C90E75721BE7E1E40077C3CC /* PersistenceController.m */; };
+		C90E75B91BE821970077C3CC /* PersistenceController.m in Sources */ = {isa = PBXBuildFile; fileRef = C90E75721BE7E1E40077C3CC /* PersistenceController.m */; };
 		C9E0F75C1BE18A0900B9F387 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E0F75B1BE18A0900B9F387 /* main.m */; };
 		C9E0F75F1BE18A0900B9F387 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E0F75E1BE18A0900B9F387 /* AppDelegate.m */; };
 		C9E0F7621BE18A0900B9F387 /* bNotes.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C9E0F7601BE18A0900B9F387 /* bNotes.xcdatamodeld */; };
@@ -17,6 +20,9 @@
 		C9E0F7701BE18A0900B9F387 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C9E0F76E1BE18A0900B9F387 /* LaunchScreen.storyboard */; };
 		C9E0F77B1BE18A0900B9F387 /* bNotesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E0F77A1BE18A0900B9F387 /* bNotesTests.m */; };
 		C9E0F7861BE18A0900B9F387 /* bNotesUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E0F7851BE18A0900B9F387 /* bNotesUITests.m */; };
+		C9E0F7A31BE4134F00B9F387 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E0F7A21BE4134F00B9F387 /* ShareViewController.m */; };
+		C9E0F7A61BE4134F00B9F387 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C9E0F7A41BE4134F00B9F387 /* MainInterface.storyboard */; };
+		C9E0F7AA1BE4135000B9F387 /* bNotesShare.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C9E0F79F1BE4134F00B9F387 /* bNotesShare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,9 +40,32 @@
 			remoteGlobalIDString = C9E0F7561BE18A0900B9F387;
 			remoteInfo = bNotes;
 		};
+		C9E0F7A81BE4135000B9F387 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C9E0F74F1BE18A0900B9F387 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C9E0F79E1BE4134F00B9F387;
+			remoteInfo = bNotesShare;
+		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		C9E0F7AE1BE4135000B9F387 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				C9E0F7AA1BE4135000B9F387 /* bNotesShare.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		C90E75711BE7E1E40077C3CC /* PersistenceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersistenceController.h; sourceTree = "<group>"; };
+		C90E75721BE7E1E40077C3CC /* PersistenceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersistenceController.m; sourceTree = "<group>"; };
 		C9E0F7571BE18A0900B9F387 /* bNotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = bNotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9E0F75B1BE18A0900B9F387 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C9E0F75D1BE18A0900B9F387 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -58,6 +87,13 @@
 		C9E0F7871BE18A0900B9F387 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C9E0F7931BE242C400B9F387 /* bNotes 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "bNotes 2.xcdatamodel"; sourceTree = "<group>"; };
 		C9E0F79A1BE2875B00B9F387 /* bNotes 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "bNotes 3.xcdatamodel"; sourceTree = "<group>"; };
+		C9E0F79F1BE4134F00B9F387 /* bNotesShare.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = bNotesShare.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		C9E0F7A11BE4134F00B9F387 /* ShareViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShareViewController.h; sourceTree = "<group>"; };
+		C9E0F7A21BE4134F00B9F387 /* ShareViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShareViewController.m; sourceTree = "<group>"; };
+		C9E0F7A51BE4134F00B9F387 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		C9E0F7A71BE4134F00B9F387 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C9E0F7AF1BE41FDA00B9F387 /* bNotesShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = bNotesShare.entitlements; sourceTree = "<group>"; };
+		C9E0F7B01BE422A800B9F387 /* bNotes.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = bNotes.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,15 +118,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C9E0F79C1BE4134F00B9F387 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		C9E0F74E1BE18A0900B9F387 = {
 			isa = PBXGroup;
 			children = (
+				C90E75711BE7E1E40077C3CC /* PersistenceController.h */,
+				C90E75721BE7E1E40077C3CC /* PersistenceController.m */,
 				C9E0F7591BE18A0900B9F387 /* bNotes */,
 				C9E0F7791BE18A0900B9F387 /* bNotesTests */,
 				C9E0F7841BE18A0900B9F387 /* bNotesUITests */,
+				C9E0F7A01BE4134F00B9F387 /* bNotesShare */,
 				C9E0F7581BE18A0900B9F387 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -101,6 +147,7 @@
 				C9E0F7571BE18A0900B9F387 /* bNotes.app */,
 				C9E0F7761BE18A0900B9F387 /* bNotesTests.xctest */,
 				C9E0F7811BE18A0900B9F387 /* bNotesUITests.xctest */,
+				C9E0F79F1BE4134F00B9F387 /* bNotesShare.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -108,6 +155,7 @@
 		C9E0F7591BE18A0900B9F387 /* bNotes */ = {
 			isa = PBXGroup;
 			children = (
+				C9E0F7B01BE422A800B9F387 /* bNotes.entitlements */,
 				C9E0F75D1BE18A0900B9F387 /* AppDelegate.h */,
 				C9E0F75E1BE18A0900B9F387 /* AppDelegate.m */,
 				C9E0F7631BE18A0900B9F387 /* MasterViewController.h */,
@@ -150,6 +198,18 @@
 			path = bNotesUITests;
 			sourceTree = "<group>";
 		};
+		C9E0F7A01BE4134F00B9F387 /* bNotesShare */ = {
+			isa = PBXGroup;
+			children = (
+				C9E0F7AF1BE41FDA00B9F387 /* bNotesShare.entitlements */,
+				C9E0F7A11BE4134F00B9F387 /* ShareViewController.h */,
+				C9E0F7A21BE4134F00B9F387 /* ShareViewController.m */,
+				C9E0F7A41BE4134F00B9F387 /* MainInterface.storyboard */,
+				C9E0F7A71BE4134F00B9F387 /* Info.plist */,
+			);
+			path = bNotesShare;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -160,10 +220,12 @@
 				C9E0F7531BE18A0900B9F387 /* Sources */,
 				C9E0F7541BE18A0900B9F387 /* Frameworks */,
 				C9E0F7551BE18A0900B9F387 /* Resources */,
+				C9E0F7AE1BE4135000B9F387 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				C9E0F7A91BE4135000B9F387 /* PBXTargetDependency */,
 			);
 			name = bNotes;
 			productName = bNotes;
@@ -206,6 +268,23 @@
 			productReference = C9E0F7811BE18A0900B9F387 /* bNotesUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		C9E0F79E1BE4134F00B9F387 /* bNotesShare */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C9E0F7AD1BE4135000B9F387 /* Build configuration list for PBXNativeTarget "bNotesShare" */;
+			buildPhases = (
+				C9E0F79B1BE4134F00B9F387 /* Sources */,
+				C9E0F79C1BE4134F00B9F387 /* Frameworks */,
+				C9E0F79D1BE4134F00B9F387 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = bNotesShare;
+			productName = bNotesShare;
+			productReference = C9E0F79F1BE4134F00B9F387 /* bNotesShare.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -217,6 +296,12 @@
 				TargetAttributes = {
 					C9E0F7561BE18A0900B9F387 = {
 						CreatedOnToolsVersion = 7.1;
+						DevelopmentTeam = GUY34L2LLG;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 					C9E0F7751BE18A0900B9F387 = {
 						CreatedOnToolsVersion = 7.1;
@@ -225,6 +310,15 @@
 					C9E0F7801BE18A0900B9F387 = {
 						CreatedOnToolsVersion = 7.1;
 						TestTargetID = C9E0F7561BE18A0900B9F387;
+					};
+					C9E0F79E1BE4134F00B9F387 = {
+						CreatedOnToolsVersion = 7.1;
+						DevelopmentTeam = GUY34L2LLG;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -244,6 +338,7 @@
 				C9E0F7561BE18A0900B9F387 /* bNotes */,
 				C9E0F7751BE18A0900B9F387 /* bNotesTests */,
 				C9E0F7801BE18A0900B9F387 /* bNotesUITests */,
+				C9E0F79E1BE4134F00B9F387 /* bNotesShare */,
 			);
 		};
 /* End PBXProject section */
@@ -273,6 +368,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C9E0F79D1BE4134F00B9F387 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C9E0F7A61BE4134F00B9F387 /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -281,6 +384,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C9E0F7681BE18A0900B9F387 /* DetailViewController.m in Sources */,
+				C90E75731BE7E1E40077C3CC /* PersistenceController.m in Sources */,
 				C9E0F7651BE18A0900B9F387 /* MasterViewController.m in Sources */,
 				C9E0F75F1BE18A0900B9F387 /* AppDelegate.m in Sources */,
 				C9E0F75C1BE18A0900B9F387 /* main.m in Sources */,
@@ -304,6 +408,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C9E0F79B1BE4134F00B9F387 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C90E75701BE7C0950077C3CC /* bNotes.xcdatamodeld in Sources */,
+				C90E75B91BE821970077C3CC /* PersistenceController.m in Sources */,
+				C9E0F7A31BE4134F00B9F387 /* ShareViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -316,6 +430,11 @@
 			isa = PBXTargetDependency;
 			target = C9E0F7561BE18A0900B9F387 /* bNotes */;
 			targetProxy = C9E0F7821BE18A0900B9F387 /* PBXContainerItemProxy */;
+		};
+		C9E0F7A91BE4135000B9F387 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C9E0F79E1BE4134F00B9F387 /* bNotesShare */;
+			targetProxy = C9E0F7A81BE4135000B9F387 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -334,6 +453,14 @@
 				C9E0F76F1BE18A0900B9F387 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		C9E0F7A41BE4134F00B9F387 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C9E0F7A51BE4134F00B9F387 /* Base */,
+			);
+			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -425,10 +552,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = bNotes/bNotes.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = bNotes/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.BenRussell.bNotes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -436,10 +567,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = bNotes/bNotes.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = bNotes/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.BenRussell.bNotes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
@@ -491,6 +626,36 @@
 			};
 			name = Release;
 		};
+		C9E0F7AB1BE4135000B9F387 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = bNotesShare/bNotesShare.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = bNotesShare/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.BenRussell.bNotes.bNotesShare;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		C9E0F7AC1BE4135000B9F387 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = bNotesShare/bNotesShare.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = bNotesShare/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.BenRussell.bNotes.bNotesShare;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -526,6 +691,15 @@
 			buildConfigurations = (
 				C9E0F7911BE18A0A00B9F387 /* Debug */,
 				C9E0F7921BE18A0A00B9F387 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C9E0F7AD1BE4135000B9F387 /* Build configuration list for PBXNativeTarget "bNotesShare" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C9E0F7AB1BE4135000B9F387 /* Debug */,
+				C9E0F7AC1BE4135000B9F387 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
