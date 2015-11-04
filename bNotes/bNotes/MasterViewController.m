@@ -11,7 +11,10 @@
 
 
 
-@interface MasterViewController () 
+@interface MasterViewController ()
+
+@property (strong, nonatomic) NSMutableArray *fetchedObjects;
+@property (strong, nonatomic) NSMutableArray *filteredObjects;
 
 @end
 
@@ -24,6 +27,9 @@
     
     self.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
     self.navigationItem.leftItemsSupplementBackButton = true;
+    
+    self.fetchedObjects = [[NSMutableArray alloc] initWithArray:self.fetchedResultsController.fetchedObjects];
+    self.filteredObjects = [NSMutableArray new];
 
 
 }
@@ -86,18 +92,32 @@
 #pragma mark - Table View
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        return 1;
+    }
     return [[self.fetchedResultsController sections] count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        return self.fetchedObjects.count;
+    }
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
     return [sectionInfo numberOfObjects];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+//        [self configureSearchCell:cell atIndexPath:indexPath];
+        return cell;
+        
+    } else {
+    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     [self configureCell:cell atIndexPath:indexPath];
     return cell;
+    }
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -116,6 +136,12 @@
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    cell.textLabel.text = [object valueForKey:@"title"];
+    cell.detailTextLabel.text = [object valueForKey:@"text"];
+}
+
+- (void)configureSearchCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+    NSManagedObject *object = self.filteredObjects[indexPath.row];
     cell.textLabel.text = [object valueForKey:@"title"];
     cell.detailTextLabel.text = [object valueForKey:@"text"];
 }
