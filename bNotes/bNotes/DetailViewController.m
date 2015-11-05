@@ -12,10 +12,11 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface DetailViewController ()<UITextViewDelegate, UITextFieldDelegate>
-@property (weak, nonatomic) IBOutlet UITextView *textView;
+
 @property (weak, nonatomic) IBOutlet UITextField *titleTextField;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (assign) BOOL iPadViewLaidOut;
+@property (weak, nonatomic) IBOutlet UITextView *textView;
 
 @end
 
@@ -76,12 +77,14 @@
     if (self.detailItem) {
         self.titleTextField.text = [[self.detailItem valueForKey:@"title"] description];
         self.textView.text = [[self.detailItem valueForKey:@"text"] description];
+        
     }
     
     self.textView.delegate = self;
     if ([self.textView.text isEqualToString:@""]) {
-    self.textView.text = @"Add note here";
-    self.textView.textColor = [UIColor lightGrayColor];
+        self.textView.text = @"Add note here";
+        self.textView.editable = YES;
+        self.textView.textColor = [UIColor lightGrayColor];
     }
 //    self.textView.dataDetectorTypes = UIDataDetectorTypeAll;
     
