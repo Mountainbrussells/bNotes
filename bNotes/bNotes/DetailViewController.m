@@ -9,6 +9,7 @@
 #import "DetailViewController.h"
 #import "AppDelegate.h"
 #import "MasterViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface DetailViewController ()<UITextViewDelegate, UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextView *textView;
@@ -42,7 +43,34 @@
 
 - (void)configureView {
     // Update the user interface for the detail item.
-    
+    /* Add Grey Screen if no detail item exists*/
+//    if (!self.detailItem) {
+//        
+//        UIView *greyView = [[UIView alloc] initWithFrame:CGRectMake(self.view.bounds.origin.x,self.view.bounds.origin.y, self.view.bounds.size.height,self.view.bounds.size.width)];
+//        greyView.backgroundColor = [UIColor lightGrayColor];
+//        greyView.alpha = 0.5;
+//        
+//        CGFloat labelX = self.view.bounds.size.width - 400;
+//        
+//        
+//        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(labelX, 180, 300, 60)];
+//        label.backgroundColor = [UIColor grayColor];
+//        label.text = @"PLease select a note from the menu \n or hit the + to create a new one";
+//        label.numberOfLines = 2;
+//        label.textAlignment = UITextAlignmentCenter;
+//        [label.layer setCornerRadius:10];
+//        label.layer.masksToBounds = YES;
+//        
+//        
+//        [greyView addSubview:label];
+//        
+//        
+//        
+//        
+//        
+//        [self.view addSubview:greyView];
+//        
+//    }
     
     
     if (self.detailItem) {
@@ -58,6 +86,8 @@
 //    self.textView.dataDetectorTypes = UIDataDetectorTypeAll;
     
     self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryOverlay;
+    
+    // Recreate toolbar as it doesn't show in SizeClassRegular
 
     if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular || self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassRegular) {
 
@@ -174,15 +204,28 @@
 
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
-    [_detailItem setValue:self.textView.text forKey:@"text"];
-    [_detailItem setValue:self.titleTextField.text forKey:@"title"];
     
-    [self.persistenceController save];
+    if ([self.textView.text isEqual:@"Add note here"] && [self.titleTextField.text isEqual:@""]){
+        NSManagedObjectContext *context = [self.persistenceController managedObjectContext];
+        [context deleteObject:_detailItem];
+        
+        [self.persistenceController save];
+    } else {
+        [_detailItem setValue:self.textView.text forKey:@"text"];
+        [_detailItem setValue:self.titleTextField.text forKey:@"title"];
+        [self.persistenceController save];
+    }
+    
+   
     
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([self.textView.text isEqual:@"Add note here"]) {
+        [_detailItem setValue:@"" forKey:@"text"];
+    } else {
     [_detailItem setValue:self.textView.text forKey:@"text"];
+    }
     [_detailItem setValue:self.titleTextField.text forKey:@"title"];
     [self.persistenceController save];
 }
