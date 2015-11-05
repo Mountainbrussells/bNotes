@@ -137,7 +137,13 @@
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
     cell.textLabel.text = [object valueForKey:@"title"];
+    if ([cell.textLabel.text  isEqual:@""]) {
+        cell.textLabel.text = @"NO TITLE";
+    }
     cell.detailTextLabel.text = [object valueForKey:@"text"];
+    if ([cell.detailTextLabel.text isEqual:@""]) {
+        cell.detailTextLabel.text = @"NO CONTENT";
+    }
 }
 
 - (void)configureSearchCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
