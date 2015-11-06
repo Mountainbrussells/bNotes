@@ -343,7 +343,7 @@
 - (void)startEdit
 {
     
-    
+    // This method enables us to to change the initial state from .editable = NO to .editable = YES for self.textView if the user taps other then on a data link.  It works fine on actually phone, not great on simulator.
     
    
     NSArray *textRanges = [[self rangesForURLsInString:self.textView.text] arrayByAddingObjectsFromArray:[self rangesForPhoneNumbersInString:self.textView.text]];
