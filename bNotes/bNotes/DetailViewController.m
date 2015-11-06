@@ -17,6 +17,7 @@
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (assign) BOOL iPadViewLaidOut;
 @property (weak, nonatomic) IBOutlet UITextView *textView;
+@property (strong, nonatomic) UITapGestureRecognizer *tapGesture;
 
 @end
 
@@ -43,7 +44,11 @@
 }
 
 - (void)configureView {
-    // Update the user interface for the detail item.
+    // Add Tap Gesture Recognizer for existing notes to make editable
+    
+    self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startEdit)];
+    [self.textView addGestureRecognizer:self.tapGesture];
+    
     /* Add Grey Screen if no detail item exists*/
 //    if (!self.detailItem) {
 //        
@@ -292,6 +297,11 @@
     }
 }
 
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    return YES;
+}
+
 #pragma mark - Fetched results controller
 
 - (NSFetchedResultsController *)fetchedResultsController
@@ -328,6 +338,82 @@
     }
     
     return _fetchedResultsController;
+}
+
+- (void)startEdit
+{
+    
+    
+    
+   
+    NSArray *textRanges = [[self rangesForURLsInString:self.textView.text] arrayByAddingObjectsFromArray:[self rangesForPhoneNumbersInString:self.textView.text]];
+   
+    
+    if (textRanges.count > 0) {
+        for (NSValue *rangeValue in textRanges) {
+            NSRange range = [rangeValue rangeValue];
+            UITextPosition *beginning = self.textView.beginningOfDocument;
+            UITextPosition *startPosition = [self.textView positionFromPosition:beginning   offset:range.location];
+            UITextPosition *endPosition = [self.textView positionFromPosition:startPosition offset:range.length];
+            
+            
+            UITextRange *textRange = [self.textView textRangeFromPosition:startPosition
+                                                               toPosition:endPosition];
+            CGRect textRect = [self.textView firstRectForRange:textRange];
+            
+            CGPoint location = [self.tapGesture locationInView:self.textView];
+            
+            if (CGRectContainsPoint(textRect, location)) {
+                
+                NSLog(@"Data link tapped");
+                
+            } else {
+                
+                
+                self.textView.editable = YES;
+                
+            }
+        }
+    } else {
+        self.textView.editable = YES;
+    }
+    
+    
+    
+}
+
+-(NSArray *)rangesForURLsInString:(NSString *)text
+{
+    NSMutableArray *ranges = [NSMutableArray new];
+    NSError *error;
+    
+    NSDataDetector *linkDetector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:&error];
+    
+    [linkDetector enumerateMatchesInString:text options:0 range:NSMakeRange(0, text.length) usingBlock:^(NSTextCheckingResult * _Nullable result, NSMatchingFlags flags, BOOL * _Nonnull stop) {
+        if (result.resultType == NSTextCheckingTypeLink) {
+            
+            [ranges addObject:[NSValue valueWithRange:result.range]];
+            
+        }
+    }];
+    return ranges;
+    
+}
+
+-(NSArray *)rangesForPhoneNumbersInString:(NSString *)text
+{
+    NSMutableArray *ranges = [NSMutableArray new];
+    NSError *error;
+    
+    NSDataDetector *phoneNumberDetector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypePhoneNumber error:&error];
+    
+    [phoneNumberDetector enumerateMatchesInString:text options:0 range:NSMakeRange(0, text.length) usingBlock:^(NSTextCheckingResult * _Nullable result, NSMatchingFlags flags, BOOL * _Nonnull stop) {
+        if (result.resultType == NSTextCheckingTypePhoneNumber) {
+            [ranges addObject:[NSValue valueWithRange:result.range]];
+        }
+    }];
+    return ranges;
+    
 }
 
 
