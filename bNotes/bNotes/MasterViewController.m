@@ -11,10 +11,11 @@
 
 
 
-@interface MasterViewController () <UISearchDisplayDelegate>
+@interface MasterViewController () <UISearchDisplayDelegate, UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating, UISearchDisplayDelegate>
 
 @property (strong, nonatomic) NSMutableArray *fetchedObjects;
 @property (strong, nonatomic) NSMutableArray *filteredObjects;
+@property (strong, nonatomic) UISearchController *searchController;
 
 @end
 
@@ -28,14 +29,24 @@
     self.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
     self.navigationItem.leftItemsSupplementBackButton = true;
     
+    self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
+    self.searchController.searchResultsUpdater = self;
+    self.searchController.dimsBackgroundDuringPresentation = NO;
+    self.searchController.searchBar.delegate = self;
+    
+    self.tableView.tableHeaderView = self.searchController.searchBar;
+    self.definesPresentationContext = YES;
+    [self.searchController.searchBar sizeToFit];
+        
+    
     self.fetchedObjects = [[NSMutableArray alloc] initWithArray:self.fetchedResultsController.fetchedObjects];
     self.filteredObjects = [[NSMutableArray alloc] init];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForeground) name:UIApplicationWillEnterForegroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
 
 
 }
 
-- (void)applicationWillEnterForeground
+- (void)applicationWillEnterForeground:(NSNotification *) note
 {
     self.fetchedResultsController = nil;
     
@@ -107,32 +118,28 @@
 #pragma mark - Table View
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
-        return 1;
-    }
+
     return [[self.fetchedResultsController sections] count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
+
+    if (self.searchController.active) {
         return self.filteredObjects.count;
+    } else {
+        id<NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[section];
+        
+        return [sectionInfo numberOfObjects];
     }
-    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
-    return [sectionInfo numberOfObjects];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
-        UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
-        [self configureSearchCell:cell atIndexPath:indexPath];
-        return cell;
-        
-    } else {
+
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     [self configureCell:cell atIndexPath:indexPath];
     return cell;
-    }
+
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -150,30 +157,33 @@
 }
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-    NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    cell.textLabel.text = [object valueForKey:@"title"];
-    if ([cell.textLabel.text  isEqual:@""]) {
-        cell.textLabel.text = @"NO TITLE";
-    }
-    cell.detailTextLabel.text = [object valueForKey:@"text"];
-    if ([cell.detailTextLabel.text isEqual:@""]) {
-        cell.detailTextLabel.text = @"NO CONTENT";
-    }
-}
-
-- (void)configureSearchCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-    if (self.filteredObjects.count > 0) {
-        NSManagedObject *object = self.filteredObjects[indexPath.row];
-        cell.textLabel.text = [object valueForKey:@"title"];
-        cell.detailTextLabel.text = [object valueForKey:@"text"];
-    }
-    else {
-        return;
-    }
+   
     
+    if (self.searchController.active) {
+        if (self.filteredObjects.count > 0) {
+            
+            NSManagedObject *object = [self.filteredObjects objectAtIndex:indexPath.row];
+            cell.textLabel.text = [object valueForKey:@"title"];
+            if ([cell.textLabel.text  isEqual:@""]) {
+                cell.textLabel.text = @"NO TITLE";
+            }
+            cell.detailTextLabel.text = [object valueForKey:@"text"];
+            if ([cell.detailTextLabel.text isEqual:@""]) {
+                cell.detailTextLabel.text = @"NO CONTENT";
+            }
+        }
+    } else {
+        NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        cell.textLabel.text = [object valueForKey:@"title"];
+        if ([cell.textLabel.text  isEqual:@""]) {
+            cell.textLabel.text = @"NO TITLE";
+        }
+        cell.detailTextLabel.text = [object valueForKey:@"text"];
+        if ([cell.detailTextLabel.text isEqual:@""]) {
+            cell.detailTextLabel.text = @"NO CONTENT";
+        }
+    }
 }
-
-#pragma mark - Fetched results controller
 
 - (NSFetchedResultsController *)fetchedResultsController
 {
@@ -191,7 +201,7 @@
     
     // Edit the sort key as appropriate.
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStamp" ascending:NO];
-
+    
     [fetchRequest setSortDescriptors:@[sortDescriptor]];
     
     // Edit the section name key path and cache name if appropriate.
@@ -200,25 +210,27 @@
     aFetchedResultsController.delegate = self;
     self.fetchedResultsController = aFetchedResultsController;
     self.fetchedResultsController.delegate = self;
-	NSError *error = nil;
-	if (![self.fetchedResultsController performFetch:&error]) {
-	     // Replace this implementation with code to handle the error appropriately.
-	     // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
-	    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-	    abort();
-	}
+    NSError *error = nil;
+    if (![self.fetchedResultsController performFetch:&error]) {
+        // Replace this implementation with code to handle the error appropriately.
+        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
     
     return _fetchedResultsController;
-}    
+}
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
     [self.tableView beginUpdates];
 }
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
            atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
 {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
     switch(type) {
         case NSFetchedResultsChangeInsert:
             [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
@@ -237,6 +249,7 @@
        atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath
 {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
     UITableView *tableView = self.tableView;
     
     switch(type) {
@@ -261,6 +274,7 @@
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
     [self.tableView endUpdates];
     
 }
@@ -284,14 +298,19 @@
     
 }
 
-#pragma mark - UISearchDisplayDelegates
 
-- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(nullable NSString *)searchString
+
+#pragma mark - UISearchControllerDelegates
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController
 {
+    
+    NSString *searchString = searchController.searchBar.text;
     NSArray *notes = [[NSArray alloc] initWithArray: self.fetchedResultsController.fetchedObjects];
     [self filterNotes:notes forSearchText:searchString];
-    return YES;
+    [self.tableView reloadData];
 }
+
+
 /*
 // Implementing the above methods to update the table view in response to individual changes may have performance implications if a large number of changes are made simultaneously. If this proves to be an issue, you can instead just implement controllerDidChangeContent: which notifies the delegate that all section and object changes have been processed. 
  

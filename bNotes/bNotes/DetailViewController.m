@@ -19,6 +19,8 @@
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 @property (strong, nonatomic) UITapGestureRecognizer *tapGesture;
 
+
+
 @end
 
 @implementation DetailViewController
@@ -46,7 +48,7 @@
 - (void)configureView {
     // Add Tap Gesture Recognizer for existing notes to make editable
     
-    self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startEdit)];
+    self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startEdit:)];
     [self.textView addGestureRecognizer:self.tapGesture];
     
     /* Add Grey Screen if no detail item exists*/
@@ -179,6 +181,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
 
+    
+    
     
     
     // Update the view.
@@ -340,7 +344,7 @@
     return _fetchedResultsController;
 }
 
-- (void)startEdit
+- (void)startEdit:(UITapGestureRecognizer *)tap
 {
     
     // This method enables us to to change the initial state from .editable = NO to .editable = YES for self.textView if the user taps other then on a data link.  It works fine on actually phone, not great on simulator.
@@ -350,6 +354,7 @@
    
     
     if (textRanges.count > 0) {
+        BOOL tapInURL = NO;
         for (NSValue *rangeValue in textRanges) {
             NSRange range = [rangeValue rangeValue];
             UITextPosition *beginning = self.textView.beginningOfDocument;
@@ -366,13 +371,21 @@
             if (CGRectContainsPoint(textRect, location)) {
                 
                 NSLog(@"Data link tapped");
-                
-            } else {
-                
-                
-                self.textView.editable = YES;
+                tapInURL = YES;
+                break;
                 
             }
+//            else {
+//                
+//                
+//                self.textView.editable = YES;
+//                
+//            }
+        }
+        if(tapInURL) {
+            //do something
+        } else {
+            self.textView.editable = YES;
         }
     } else {
         self.textView.editable = YES;

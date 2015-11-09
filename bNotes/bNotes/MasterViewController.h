@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 #import "PersistenceController.h"
+#import <Foundation/Foundation.h>
 
 
 
