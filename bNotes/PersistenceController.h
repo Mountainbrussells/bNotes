@@ -15,6 +15,8 @@ typedef void (^InitCallbackBlock)(void);
 
 @property (strong, readonly) NSManagedObjectContext *managedObjectContext;
 
+@property (assign) BOOL useiCloud;
+
 - (id)initWithCallback:(InitCallbackBlock)callback;
 
 -(void)save;

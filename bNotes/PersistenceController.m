@@ -33,6 +33,7 @@
 
 - (void)initializeCoreData
 {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
     if ([self managedObjectContext]) return;
     
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"bNotes" withExtension:@"momd"];

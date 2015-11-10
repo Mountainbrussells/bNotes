@@ -42,8 +42,67 @@
     self.fetchedObjects = [[NSMutableArray alloc] initWithArray:self.fetchedResultsController.fetchedObjects];
     self.filteredObjects = [[NSMutableArray alloc] init];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
+    
+
+    
 
 
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    [super viewDidAppear:animated];
+    
+    // iCloud permissions
+    NSFileManager* fileManager = [NSFileManager defaultManager];
+    id currentiCloudToken = fileManager.ubiquityIdentityToken;
+    
+    if (currentiCloudToken) {
+        NSData *newTokenData = [NSKeyedArchiver archivedDataWithRootObject: currentiCloudToken];
+        [[NSUserDefaults standardUserDefaults] setObject: newTokenData forKey: @"com.apple.bNotes.UbiquityIdentityToken"];
+    } else {
+        [[NSUserDefaults standardUserDefaults]
+         removeObjectForKey: @"com.apple.bNotes.UbiquityIdentityToken"];
+    }
+    
+    [[NSNotificationCenter defaultCenter]
+     addObserver: self
+     selector: @selector (iCloudAccountAvailabilityChanged:)
+     name: NSUbiquityIdentityDidChangeNotification
+     object: nil];
+    
+    BOOL notFirstLaunchWithiCloudAvailable = [[NSUserDefaults standardUserDefaults] boolForKey:@"notFirstLaunchWithiCloudAvailable"];
+    
+    if (currentiCloudToken && !notFirstLaunchWithiCloudAvailable) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Choose Storage Option"
+                                                                       message:@"Should documents be stored in iCloud and available on all your devices?"
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *cancelAction = [UIAlertAction
+                                       actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel action")
+                                       style:UIAlertActionStyleCancel
+                                       handler:^(UIAlertAction *action)
+                                       {
+                                           NSLog(@"Cancel action");
+                                       }];
+        
+        UIAlertAction *okAction = [UIAlertAction
+                                   actionWithTitle:NSLocalizedString(@"OK", @"OK action")
+                                   style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction *action)
+                                   {
+                                       NSLog(@"OK action");
+                                       self.persistenceController.useiCloud = YES;
+                                   }];
+        
+        [alert addAction:cancelAction];
+        [alert addAction:okAction];
+        
+        
+        [self presentViewController:alert animated:YES completion:nil];
+        
+        [[NSUserDefaults standardUserDefaults] setValue:@TRUE forKey:@"notFirstLaunchWithiCloudAvailable"];
+    }
 }
 
 - (void)applicationWillEnterForeground:(NSNotification *) note
@@ -223,7 +282,7 @@
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+    
     [self.tableView beginUpdates];
 }
 
@@ -249,7 +308,7 @@
        atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath
 {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+    
     UITableView *tableView = self.tableView;
     
     switch(type) {
@@ -274,7 +333,7 @@
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+    
     [self.tableView endUpdates];
     
 }
