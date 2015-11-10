@@ -92,7 +92,7 @@
                                    handler:^(UIAlertAction *action)
                                    {
                                        NSLog(@"OK action");
-                                       self.persistenceController.useiCloud = YES;
+                                       [[NSNotificationCenter defaultCenter] postNotificationName:@"UseiCloud" object:self];
                                    }];
         
         [alert addAction:cancelAction];

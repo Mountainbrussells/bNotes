@@ -13,6 +13,8 @@
 @property (strong, readwrite) NSManagedObjectContext *managedObjectContext;
 @property (strong) NSManagedObjectContext *privateContext;
 
+@property (assign) BOOL useiCloud;
+
 @property (copy) InitCallbackBlock initCallback;
 
 - (void)initializeCoreData;
@@ -26,6 +28,7 @@
     if (!(self = [super init])) return nil;
     
     [self setInitCallback:callback];
+    self.useiCloud = NO;
     [self initializeCoreData];
     
     return self;
@@ -78,6 +81,8 @@
             [self initCallback]();
         });
     });
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initializeiCloud:) name:@"UseiCloud" object:nil];
 }
 
 - (void)save;
@@ -118,6 +123,12 @@
             }
         }];
     }];
+}
+
+- (void)initializeiCloud:(id)sender
+{
+    self.useiCloud = TRUE;
+    [self initializeCoreData];
 }
 
 @end
