@@ -47,7 +47,47 @@
     
     [self setPrivateContext:[[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType]];
     [[self privateContext] setPersistentStoreCoordinator:coordinator];
+    [self.privateContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
     [[self managedObjectContext] setParentContext:[self privateContext]];
+    
+    NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.com.BenRussell.bNotes"];
+    
+    if ([defaults boolForKey:@"useiCloudStore"]) {
+        // Subscribe to iCloud Notifications
+        NSNotificationCenter *defaulCenter = [NSNotificationCenter defaultCenter];
+        [defaulCenter addObserver:self
+                         selector:@selector(storesWillChange:)
+                             name:NSPersistentStoreCoordinatorStoresWillChangeNotification
+                           object:self.privateContext.persistentStoreCoordinator];
+        
+        [defaulCenter addObserver:self
+                         selector:@selector(storesDidChange:)
+                             name:NSPersistentStoreCoordinatorStoresDidChangeNotification
+                           object:self.privateContext.persistentStoreCoordinator];
+        [defaulCenter addObserver:self
+                         selector:@selector(persistentStoreDidImportUbiquitousContentChanges:)
+                             name:NSPersistentStoreDidImportUbiquitousContentChangesNotification
+                           object:self.privateContext.persistentStoreCoordinator];
+        
+        
+        
+        NSURL *documentsDirectory = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+        
+        NSURL *storeURL = [documentsDirectory URLByAppendingPathComponent:@"CoreData.sqlite"];
+        
+        NSError *error;
+        
+        
+        NSDictionary *storeOptions = @{NSPersistentStoreUbiquitousContentNameKey: @"bNotesCloudStore"};
+     
+        
+        [self.privateContext.persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+                                                                     configuration:nil
+                                                                               URL:storeURL
+                                                                           options:storeOptions
+                                                                             error:&error];
+        return;
+    }
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         NSPersistentStoreCoordinator *psc = [[self privateContext] persistentStoreCoordinator];
@@ -56,6 +96,8 @@
         options[NSMigratePersistentStoresAutomaticallyOption] = @YES;
         options[NSInferMappingModelAutomaticallyOption] = @YES;
         options[NSSQLitePragmasOption] = @{ @"journal_mode":@"DELETE" };
+        
+        
         
         
         NSURL *storeURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:@"group.com.BenRussell.bnotes"];
@@ -127,8 +169,79 @@
 
 - (void)initializeiCloud:(id)sender
 {
-    self.useiCloud = TRUE;
-    [self initializeCoreData];
+
+    // Subscribe to iCloud Notifications
+    NSNotificationCenter *defaulCenter = [NSNotificationCenter defaultCenter];
+    [defaulCenter addObserver:self
+                     selector:@selector(storesWillChange:)
+                         name:NSPersistentStoreCoordinatorStoresWillChangeNotification
+                       object:self.privateContext.persistentStoreCoordinator];
+    
+    [defaulCenter addObserver:self
+                     selector:@selector(storesDidChange:)
+                         name:NSPersistentStoreCoordinatorStoresDidChangeNotification
+                       object:self.privateContext.persistentStoreCoordinator];
+    [defaulCenter addObserver:self
+                     selector:@selector(persistentStoreDidImportUbiquitousContentChanges:)
+                         name:NSPersistentStoreDidImportUbiquitousContentChangesNotification
+                       object:self.privateContext.persistentStoreCoordinator];
+    
+    NSPersistentStore *currentStore = self.privateContext.persistentStoreCoordinator.persistentStores.lastObject;
+   
+    NSURL *documentsDirectory = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+    
+    NSURL *storeURL = [documentsDirectory URLByAppendingPathComponent:@"CoreData.sqlite"];
+    
+    NSError *error;
+    
+    
+    NSDictionary *storeOptions = @{NSPersistentStoreUbiquitousContentNameKey: @"bNotesCloudStore"};
+    
+    
+    [self.privateContext.persistentStoreCoordinator migratePersistentStore:currentStore
+                                                                     toURL:storeURL
+                                                                   options:storeOptions
+                                                                  withType:NSSQLiteStoreType
+                                                                     error:&error];
+    NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.com.BenRussell.bNotes"];
+    
+    [defaults setBool:true forKey:@"useiCloudStore"];
+    
 }
 
+- (void) storesWillChange:(NSNotification *)note
+{
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    if ([self.privateContext hasChanges]) {
+        NSError *error;
+        if (![self.privateContext save:&error]) {
+            NSLog(@"Save error: %@", error);
+        } else {
+            [self.privateContext reset];
+        }
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"iCloudDataChanged" object:self];
+}
+
+- (void) storesDidChange:(NSNotification *)note
+{
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    [self save];
+    [self.privateContext reset];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"iCloudDataChanged" object:self];
+}
+
+
+- (void) persistentStoreDidImportUbiquitousContentChanges: (NSNotification *)note
+{
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    
+    
+    [self.privateContext performBlock:^{
+        [self.privateContext mergeChangesFromContextDidSaveNotification:note];
+        [self save];
+        [self.privateContext reset];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"iCloudDataChanged" object:self];
+    }];
+}
 @end

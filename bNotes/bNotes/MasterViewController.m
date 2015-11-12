@@ -42,6 +42,7 @@
     self.fetchedObjects = [[NSMutableArray alloc] initWithArray:self.fetchedResultsController.fetchedObjects];
     self.filteredObjects = [[NSMutableArray alloc] init];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(iCloudDataChanged:) name:@"iCloudDataChanged" object:nil];
     
 
     
@@ -93,6 +94,9 @@
                                    {
                                        NSLog(@"OK action");
                                        [[NSNotificationCenter defaultCenter] postNotificationName:@"UseiCloud" object:self];
+                                       NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.com.BenRussell.bNotes"];
+                                       
+                                       [defaults setBool:true forKey:@"useiCloudStore"];
                                    }];
         
         [alert addAction:cancelAction];
@@ -265,7 +269,7 @@
     
     // Edit the section name key path and cache name if appropriate.
     // nil for section name key path means "no sections".
-    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.persistenceController.managedObjectContext sectionNameKeyPath:nil cacheName:@"AllNotes"];
+    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.persistenceController.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
     aFetchedResultsController.delegate = self;
     self.fetchedResultsController = aFetchedResultsController;
     self.fetchedResultsController.delegate = self;
@@ -336,6 +340,13 @@
     
     [self.tableView endUpdates];
     
+}
+
+- (void)iCloudDataChanged:(NSNotification *)note
+{
+    
+    [self.fetchedResultsController performFetch:nil];
+    [self.tableView reloadData];
 }
 
 #pragma mark - Filtering

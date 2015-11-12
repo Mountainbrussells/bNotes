@@ -10,13 +10,19 @@
 	<array>
 		<string>CloudDocuments</string>
 	</array>
+	<key>com.apple.developer.maps</key>
+	<false/>
 	<key>com.apple.developer.ubiquity-container-identifiers</key>
 	<array>
 		<string>iCloud.com.BenRussell.bNotes</string>
 	</array>
+	<key>com.apple.security.app-sandbox</key>
+	<false/>
 	<key>com.apple.security.application-groups</key>
 	<array>
 		<string>group.com.BenRussell.bnotes</string>
 	</array>
+	<key>keychain-access-groups</key>
+	<string></string>
 </dict>
 </plist>

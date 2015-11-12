@@ -242,12 +242,6 @@
     [self.persistenceController save];
 }
 
-//- (IBAction)addButton:(id)sender {
-////    [_detailItem setValue:self.textView.text forKey:@"text"];
-////    [_detailItem setValue:self.titleTextField.text forKey:@"title"];
-////    [self.persistenceController save];
-//}
-//
 - (IBAction)saveNote:(id)sender
 {
     [_detailItem setValue:self.textView.text forKey:@"text"];
@@ -256,6 +250,9 @@
     
     [self performSegueWithIdentifier:@"unwindSegue" sender:self];
 }
+
+
+
 
 
 - (IBAction)shareButton:(id)sender {

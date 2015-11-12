@@ -26,6 +26,8 @@
 - (void)viewDidLoad {
     
     [super viewDidLoad];
+    NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.com.BenRussell.bNotes"];
+    [defaults synchronize];
     
     self.persistenceController = [[PersistenceController alloc] initWithCallback:nil];
     self.originalContentTextForTitle = self.contentText;
