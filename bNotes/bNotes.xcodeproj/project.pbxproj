@@ -92,8 +92,8 @@
 		C9E0F7A21BE4134F00B9F387 /* ShareViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShareViewController.m; sourceTree = "<group>"; };
 		C9E0F7A51BE4134F00B9F387 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		C9E0F7A71BE4134F00B9F387 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C9E0F7AF1BE41FDA00B9F387 /* bNotesShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = bNotesShare.entitlements; sourceTree = "<group>"; };
 		C9E0F7B01BE422A800B9F387 /* bNotes.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = bNotes.entitlements; sourceTree = "<group>"; };
+		C9E721431BF6A53C00724C7C /* bNotesShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = bNotesShare.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -201,7 +201,7 @@
 		C9E0F7A01BE4134F00B9F387 /* bNotesShare */ = {
 			isa = PBXGroup;
 			children = (
-				C9E0F7AF1BE41FDA00B9F387 /* bNotesShare.entitlements */,
+				C9E721431BF6A53C00724C7C /* bNotesShare.entitlements */,
 				C9E0F7A11BE4134F00B9F387 /* ShareViewController.h */,
 				C9E0F7A21BE4134F00B9F387 /* ShareViewController.m */,
 				C9E0F7A41BE4134F00B9F387 /* MainInterface.storyboard */,
@@ -301,6 +301,9 @@
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
 							};
+							com.apple.Maps.iOS = {
+								enabled = 0;
+							};
 							com.apple.iCloud = {
 								enabled = 1;
 							};
@@ -320,6 +323,9 @@
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
+							};
+							com.apple.Maps.iOS = {
+								enabled = 0;
 							};
 							com.apple.iCloud = {
 								enabled = 1;
@@ -565,7 +571,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.BenRussell.bNotes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "65613ef8-50c1-4bb3-8144-ec73c25503d7";
 			};
 			name = Debug;
 		};
@@ -580,7 +586,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.BenRussell.bNotes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "65613ef8-50c1-4bb3-8144-ec73c25503d7";
 			};
 			name = Release;
 		};
@@ -642,7 +648,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.BenRussell.bNotes.bNotesShare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "2682eb45-6008-4f0c-8fa4-6f2ed624a484";
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -657,7 +663,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.BenRussell.bNotes.bNotesShare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "2682eb45-6008-4f0c-8fa4-6f2ed624a484";
 				SKIP_INSTALL = YES;
 			};
 			name = Release;

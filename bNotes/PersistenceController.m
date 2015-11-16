@@ -50,7 +50,7 @@
     [self.privateContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
     [[self managedObjectContext] setParentContext:[self privateContext]];
     
-    NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.com.BenRussell.bNotes"];
+    NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.com.BenRussell.bnotes"];
     
     if ([defaults boolForKey:@"useiCloudStore"]) {
         // Subscribe to iCloud Notifications
@@ -198,14 +198,27 @@
     NSDictionary *storeOptions = @{NSPersistentStoreUbiquitousContentNameKey: @"bNotesCloudStore"};
     
     
-    [self.privateContext.persistentStoreCoordinator migratePersistentStore:currentStore
-                                                                     toURL:storeURL
-                                                                   options:storeOptions
-                                                                  withType:NSSQLiteStoreType
-                                                                     error:&error];
+    
+    [self.privateContext.persistentStoreCoordinator removePersistentStore:currentStore error:&error];
+    
+    [self.privateContext.persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+                                                                 configuration:nil
+                                                                           URL:storeURL
+                                                                       options:storeOptions
+                                                                         error:&error];
+    
+    
+//    [self.privateContext.persistentStoreCoordinator migratePersistentStore:currentStore
+//                                                                     toURL:storeURL
+//                                                                   options:storeOptions
+//                                                                  withType:NSSQLiteStoreType
+//                                                                     error:&error];
     NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.com.BenRussell.bNotes"];
     
     [defaults setBool:true forKey:@"useiCloudStore"];
+    [defaults synchronize];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"iCloudDataChanged" object:self];
     
 }
 

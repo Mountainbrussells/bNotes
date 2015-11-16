@@ -26,7 +26,7 @@
 - (void)viewDidLoad {
     
     [super viewDidLoad];
-    NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.com.BenRussell.bNotes"];
+    NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.com.BenRussell.bnotes"];
     [defaults synchronize];
     
     self.persistenceController = [[PersistenceController alloc] initWithCallback:nil];

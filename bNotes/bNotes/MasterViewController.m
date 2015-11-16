@@ -94,9 +94,10 @@
                                    {
                                        NSLog(@"OK action");
                                        [[NSNotificationCenter defaultCenter] postNotificationName:@"UseiCloud" object:self];
-                                       NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.com.BenRussell.bNotes"];
+                                       NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.com.BenRussell.bnotes"];
                                        
                                        [defaults setBool:true forKey:@"useiCloudStore"];
+                                       [defaults synchronize];
                                    }];
         
         [alert addAction:cancelAction];
